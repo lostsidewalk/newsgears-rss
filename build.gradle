@@ -18,11 +18,10 @@ repositories {
 
 dependencies {
     // NewsGears
-    implementation 'com.lostsidewalk.newsgears:newsgears-model:0.1-dev1'
     implementation 'com.lostsidewalk.newsgears:newsgears-data:0.1-dev1'
     // SLF4J
-    implementation 'org.slf4j:slf4j-api:1.7.36'
-    implementation 'org.slf4j:slf4j-simple:2.0.0-alpha7'
+    implementation 'org.slf4j:slf4j-api:2.0.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.0'
 
     // spring-boot-starter-actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.3'
@@ -34,13 +33,11 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     // jaxb-api
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-    // ROAM RSS/Atom
-    implementation 'com.rometools:rome:1.18.0'
     // GSON
     implementation 'com.google.code.gson:gson:2.9.1'
 
     // postgresql driver
-    runtimeOnly 'org.postgresql:postgresql:42.4.2'
+    runtimeOnly 'org.postgresql:postgresql:42.5.0'
 
     // test
 //    testImplementation 'org.springframework.boot:spring-boot-starter-test'

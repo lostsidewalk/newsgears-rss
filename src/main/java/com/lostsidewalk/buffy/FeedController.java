@@ -1,8 +1,8 @@
 package com.lostsidewalk.buffy;
 
 
-import com.lostsidewalk.buffy.rss.ATOMFeedBuilder;
-import com.lostsidewalk.buffy.rss.RSSChannelBuilder;
+`import com.lostsidewalk.buffy.model.RenderedATOMFeed;
+import com.lostsidewalk.buffy.model.RenderedRSSFeed;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.rss.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
 
     @Autowired
-    FeedDefinitionDao feedDefinitionDao;
-
-    @Autowired
-    StagingPostDao stagingPostDao;
-
-    @Autowired
-    RSSChannelBuilder rssChannelBuilder;
-
-    @Autowired
-    ATOMFeedBuilder atomFeedBuilder;
+    RenderedFeedDao renderedFeedDao;
 
     /**
      * build an RSS feed from a NG feed definition given by the transport identifier
@@ -35,29 +26,23 @@ public class FeedController {
      */
     @GetMapping(path = "/rss/{transportIdent}")
     public Channel rss(@PathVariable String transportIdent) {
-
-        FeedDefinition feedDefinition = this.feedDefinitionDao.findByTransportIdent(transportIdent);
-        if (feedDefinition != null) {
-            return this.rssChannelBuilder
-                    .buildChannel(feedDefinition, stagingPostDao.findPublishedByFeed(feedDefinition.getIdent()));
-        } else {
-            log.debug("No RSS feed at end-point given by transportIdent={}", transportIdent);
+        RenderedRSSFeed r = renderedFeedDao.findRSSChannelByTransportIdent(transportIdent);
+        if (r == null) {
+            log.debug("No RSS feed with transportIdent={}", transportIdent);
+            return null;
         }
 
-        return null;
+        return r.getChannel();
     }
 
     @GetMapping(path = "/atom/{transportIdent}")
     public Feed atom(@PathVariable String transportIdent) {
-
-        FeedDefinition feedDefinition = this.feedDefinitionDao.findByTransportIdent(transportIdent);
-        if (feedDefinition != null) {
-            return this.atomFeedBuilder
-                    .buildFeed(feedDefinition, stagingPostDao.findPublishedByFeed(feedDefinition.getIdent()));
-        } else {
-            log.debug("No ATOM feed at end-point given by transportIdent={}", transportIdent);
+        RenderedATOMFeed r = renderedFeedDao.findATOMFeedByTransportIdent(transportIdent);
+        if (r == null) {
+            log.debug("No ATOM feed with transportIdent={}", transportIdent);
+            return null;
         }
 
-        return null;
+        return r.getFeed();
     }
 }
