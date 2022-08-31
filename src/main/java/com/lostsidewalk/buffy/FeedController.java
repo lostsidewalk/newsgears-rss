@@ -1,7 +1,7 @@
 package com.lostsidewalk.buffy;
 
 
-`import com.lostsidewalk.buffy.model.RenderedATOMFeed;
+import com.lostsidewalk.buffy.model.RenderedATOMFeed;
 import com.lostsidewalk.buffy.model.RenderedRSSFeed;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.rss.Channel;
