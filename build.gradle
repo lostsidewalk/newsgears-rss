@@ -7,8 +7,11 @@ plugins {
 
 apply plugin: 'java'
 
-targetCompatibility = '11'
-sourceCompatibility = '11'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(19)
+    }
+}
 
 repositories {
     mavenCentral()
@@ -17,16 +20,15 @@ repositories {
 }
 
 dependencies {
-    // NewsGears
-    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.1-dev1'
-    // SLF4J
-    implementation 'org.slf4j:slf4j-api:2.0.0'
-    implementation 'org.slf4j:slf4j-simple:2.0.0'
+    // newsgears-data
+    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.2'
 
+    // spring-boot-starter-parent
+    implementation 'org.springframework.boot:spring-boot-starter-parent:3.0.0'
     // spring-boot-starter-actuator
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.0'
     // sprig-boot-starter-web
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
     // commons-collections4
     implementation 'org.apache.commons:commons-collections4:4.4'
     // commons-lang
@@ -34,13 +36,17 @@ dependencies {
     // jaxb-api
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     // GSON
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10'
 
     // postgresql driver
-    runtimeOnly 'org.postgresql:postgresql:42.5.0'
+    runtimeOnly 'org.postgresql:postgresql:42.5.1'
 
     // test
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+    // junit-jupiter
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
@@ -51,4 +57,8 @@ dependencies {
 
 springBoot {
     mainClassName = 'com.lostsidewalk.buffy.rss.Application'
+}
+
+test {
+    useJUnitPlatform()
 }

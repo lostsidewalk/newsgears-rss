@@ -13,8 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @EnableScheduling
 @EnableConfigurationProperties
-@PropertySource("classpath:secret.properties")
-@ComponentScan({"com.lostsidewalk.buffy", "com.listsidewalk.buffy.rss"})
+//@PropertySource("classpath:secret.properties")
+@ComponentScan({"com.lostsidewalk.buffy", "com.lostsidewalk.buffy.rss"})
 @Configuration
 public class Application {
 
