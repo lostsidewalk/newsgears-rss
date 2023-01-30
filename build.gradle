@@ -21,14 +21,14 @@ repositories {
 
 dependencies {
     // newsgears-data
-    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.2'
+    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.3'
 
     // spring-boot-starter-parent
-    implementation 'org.springframework.boot:spring-boot-starter-parent:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-parent:3.0.1'
     // spring-boot-starter-actuator
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.1'
     // sprig-boot-starter-web
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.1'
     // commons-collections4
     implementation 'org.apache.commons:commons-collections4:4.4'
     // commons-lang
@@ -37,12 +37,14 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     // GSON
     implementation 'com.google.code.gson:gson:2.10'
+    // rome-modules
+    implementation 'com.rometools:rome-modules:1.18.0'
 
     // postgresql driver
     runtimeOnly 'org.postgresql:postgresql:42.5.1'
 
     // test
-    testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
+    testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.1') {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
     // junit-jupiter
