@@ -3,10 +3,10 @@ package com.lostsidewalk.buffy.rss;
 
 import com.google.gson.Gson;
 import com.lostsidewalk.buffy.DataAccessException;
-import com.lostsidewalk.buffy.RenderedFeedDao;
 import com.lostsidewalk.buffy.feed.FeedCredentialsDao;
 import com.lostsidewalk.buffy.feed.FeedDefinitionDao;
 import com.lostsidewalk.buffy.model.RenderedATOMFeed;
+import com.lostsidewalk.buffy.model.RenderedFeedDao;
 import com.lostsidewalk.buffy.model.RenderedRSSFeed;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
