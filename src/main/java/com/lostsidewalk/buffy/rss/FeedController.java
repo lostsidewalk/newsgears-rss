@@ -3,11 +3,11 @@ package com.lostsidewalk.buffy.rss;
 
 import com.google.gson.Gson;
 import com.lostsidewalk.buffy.DataAccessException;
-import com.lostsidewalk.buffy.feed.FeedCredentialsDao;
-import com.lostsidewalk.buffy.feed.FeedDefinitionDao;
 import com.lostsidewalk.buffy.model.RenderedATOMFeed;
 import com.lostsidewalk.buffy.model.RenderedFeedDao;
 import com.lostsidewalk.buffy.model.RenderedRSSFeed;
+import com.lostsidewalk.buffy.queue.FeedCredentialsDao;
+import com.lostsidewalk.buffy.queue.QueueDefinitionDao;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +38,7 @@ public class FeedController {
     RenderedFeedDao renderedFeedDao;
 
     @Autowired
-    FeedDefinitionDao feedDefinitionDao;
+    QueueDefinitionDao queueDefinitionDao;
 
     @Autowired
     FeedCredentialsDao feedCredentialsDao;
@@ -101,7 +101,7 @@ public class FeedController {
     }
 
     private boolean requiresAuthentication(String transportIdent) throws DataAccessException {
-        return isTrue(feedDefinitionDao.requiresAuthentication(transportIdent));
+        return isTrue(queueDefinitionDao.requiresAuthentication(transportIdent));
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
