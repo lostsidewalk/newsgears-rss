@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
@@ -25,6 +26,12 @@ public class FeedErrorHandler {
     public ResponseEntity<?> handleDataAccessException(DataAccessException e) {
         errorLogService.logDataAccessException(new Date(), e);
         return internalServerErrorResponse();
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        // Custom handling for all other exceptions
+        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), INTERNAL_SERVER_ERROR);
     }
     //
     // utility methods
