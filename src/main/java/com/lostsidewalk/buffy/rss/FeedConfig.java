@@ -10,10 +10,11 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 @Configuration
 public class FeedConfig {
 
+    @SuppressWarnings({"MethodMayBeStatic", "DesignForExtension"})
     @Bean
     public FilterRegistrationBean<ShallowEtagHeaderFilter> feedEtagFilter() {
         FilterRegistrationBean<ShallowEtagHeaderFilter> filterRegistrationBean
-                = new FilterRegistrationBean<>( new ShallowEtagHeaderFilter());
+                = new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
         filterRegistrationBean.addUrlPatterns("/feed/rss/*", "/feed/atom/*", "/feed/json/*");
         filterRegistrationBean.setName("feedEtagFilter");
         return filterRegistrationBean;

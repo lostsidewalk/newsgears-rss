@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Locale.ENGLISH;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -27,6 +28,7 @@ import static org.apache.tomcat.util.codec.binary.Base64.decodeBase64;
 import static org.springframework.http.ProblemDetail.forStatus;
 import static org.springframework.http.ResponseEntity.*;
 
+@SuppressWarnings("DesignForExtension")
 @Slf4j
 @RestController
 public class FeedController {
@@ -62,7 +64,7 @@ public class FeedController {
     }
 
     @GetMapping(path = "/feed/rss/{username}/{queueIdent}")
-    public ResponseEntity<?> rssByQueueIdent(@PathVariable String username, String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
+    public ResponseEntity<?> rssByQueueIdent(@PathVariable String username, @PathVariable String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
         String transportIdent = queueDefinitionDao.resolveTransportIdent(username, queueIdent);
         return rssByTransportIdent(transportIdent, httpServletRequest);
     }
@@ -87,7 +89,7 @@ public class FeedController {
     }
 
     @GetMapping(path = "/feed/atom/{username}/{queueIdent}")
-    public ResponseEntity<?> atomByQueueIdent(@PathVariable String username, String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
+    public ResponseEntity<?> atomByQueueIdent(@PathVariable String username, @PathVariable String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
         String transportIdent = queueDefinitionDao.resolveTransportIdent(username, queueIdent);
         return atomByTransportIdent(transportIdent, httpServletRequest);
     }
@@ -99,8 +101,8 @@ public class FeedController {
      */
     @GetMapping(path = "/feed/json/{transportIdent}")
     public ResponseEntity<?> jsonByTransportIdent(@PathVariable String transportIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
-        Serializable s = renderedFeedDao.findJSONFeedByTransportIdent(transportIdent);
-        if (s == null) {
+        Serializable serializable = renderedFeedDao.findJSONFeedByTransportIdent(transportIdent);
+        if (serializable == null) {
             log.debug("No JSON feed at transportIdent={}", transportIdent);
             return notFound().build();
         } else if (requiresAuthentication(transportIdent) && !isAuthenticated(queueDefinitionDao.findByTransportIdent(transportIdent).getId(), httpServletRequest)) {
@@ -108,11 +110,11 @@ public class FeedController {
             return of(forStatus(403)).build();
         }
 
-        return ok(GSON.fromJson(s.toString(), Object.class));
+        return ok(GSON.fromJson(serializable.toString(), Object.class));
     }
 
     @GetMapping(path = "/feed/json/{username}/{queueIdent}")
-    public ResponseEntity<?> jsonByQueueIdent(@PathVariable String username, String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
+    public ResponseEntity<?> jsonByQueueIdent(@PathVariable String username, @PathVariable String queueIdent, HttpServletRequest httpServletRequest) throws DataAccessException {
         String transportIdent = queueDefinitionDao.resolveTransportIdent(username, queueIdent);
         return jsonByTransportIdent(transportIdent, httpServletRequest);
     }
@@ -124,8 +126,8 @@ public class FeedController {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isAuthenticated(Long queueId, HttpServletRequest httpServletRequest) throws DataAccessException {
         boolean isAuthenticated = false;
-        final String authorization = httpServletRequest.getHeader("Authorization");
-        if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        if (authorization != null && authorization.toLowerCase(ENGLISH).startsWith("basic")) {
             String base64Credentials = authorization.substring("basic".length()).trim();
             if (isNotBlank(base64Credentials)) {
                 String[] values = new String(decodeBase64(base64Credentials), UTF_8).split(":", 2);
@@ -143,5 +145,14 @@ public class FeedController {
         }
 
         return isAuthenticated;
+    }
+
+    @Override
+    public String toString() {
+        return "FeedController{" +
+                "renderedFeedDao=" + renderedFeedDao +
+                ", queueDefinitionDao=" + queueDefinitionDao +
+                ", queueCredentialDao=" + queueCredentialDao +
+                '}';
     }
 }

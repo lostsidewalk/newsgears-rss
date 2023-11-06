@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Service
 public class ErrorLogService {
 
-    public void logDataAccessException(Date timestamp, DataAccessException e) {
+    public static void logDataAccessException(Date timestamp, DataAccessException e) {
         auditError("data-access-exception", "message={}", timestamp, e.getMessage());
     }
 

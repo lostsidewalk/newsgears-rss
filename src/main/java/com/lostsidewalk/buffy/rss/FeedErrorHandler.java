@@ -4,7 +4,6 @@ import com.lostsidewalk.buffy.DataAccessException;
 import com.lostsidewalk.buffy.rss.audit.ErrorLogService;
 import com.lostsidewalk.buffy.rss.model.error.ErrorDetails;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,30 +13,33 @@ import java.util.Date;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.ResponseEntity.notFound;
 
 @Slf4j
 @ControllerAdvice
 public class FeedErrorHandler {
 
-    @Autowired
-    ErrorLogService errorLogService;
-
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<?> handleDataAccessException(DataAccessException e) {
-        errorLogService.logDataAccessException(new Date(), e);
-        return internalServerErrorResponse();
+    public static ResponseEntity<?> handleDataAccessException(DataAccessException e) {
+        ErrorLogService.logDataAccessException(new Date(), e);
+        return notFoundResponse();
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+    public static ResponseEntity<?> handleAllExceptions(Exception ex, WebRequest request) {
         // Custom handling for all other exceptions
-        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), INTERNAL_SERVER_ERROR);
+        return internalServerErrorResponse();
     }
+
     //
     // utility methods
     //
+    private static ResponseEntity<?> notFoundResponse() {
+        return notFound().build();
+    }
+
     private static ResponseEntity<?> internalServerErrorResponse() {
-        return new ResponseEntity<>(getErrorDetails( "Something horrible happened, please try again later.", EMPTY), INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(getErrorDetails("Something horrible happened, please try again later.", EMPTY), INTERNAL_SERVER_ERROR);
     }
 
     private static ErrorDetails getErrorDetails(@SuppressWarnings("SameParameterValue") String message, @SuppressWarnings("SameParameterValue") String detailMessage) {
