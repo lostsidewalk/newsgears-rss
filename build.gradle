@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     // newsgears-data
-    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.5.12'
+    implementation 'com.lostsidewalk.newsgears:newsgears-data:0.5.13'
 
     // spring-boot-starter-parent
     implementation 'org.springframework.boot:spring-boot-starter-parent:3.1.2'
