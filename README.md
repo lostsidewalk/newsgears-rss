@@ -2,52 +2,22 @@
 
 # newsgears-rss
 
-newsgears-rss is the feed server component of the NewsGears RSS platform.  
+composable-rss is a multi-user, self-hosted platform that allows you to programmatically create, publish, and manage syndicated web feeds.
 
-## 1. Quick-start using pre-built containers:
+This repository contains the the feed server, which is a submodule of composable-rss-app. The feed server is responsible for serving syndicated content such as RSS, ATOM, and JSON documents.  
 
-If you don't want to do development, just start the feed server using pre-built containers:
+# Copyright and License
 
-```
-docker ...
-```
+This project is licensed under the terms of the GNU General Public License, version 3 (GPLv3).
 
-<hr>
+## Copyright
 
-## 3. For local development:
+Copyright (c) 2023 Lost Sidewalk Software LLC
 
-If you don't want to use the pre-built containers (i.e., you want to make custom code changes and build your own containers), then use the following instructions.
+## License
 
-### Setup command aliases:
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-A script called `build_module.sh` is provided to expedite image assembly.  Setup command aliases to run it to build the required images after you make code changes:
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-```
-alias ng-rss='./build_module.sh newsgears-rss'
-```
-
-#### Alternately, setup aliases build debuggable containers:
-
-```
-alias ng-rss='./build_module.sh newsgears-rss --debug 65005'
-```
-
-*Debuggable containers pause on startup until a remote debugger is attached on the specified port.*
-
-### Build and run:
-
-#### Run the following command in the directory that contains ```newsgears-rss```:
-
-```
-ng-rss && docker ...
-```
-
-Boot down in the regular way, by using ```docker ...``` in the ```newsgears-rss``` directory.
-
-<hr> 
-
-You can also use the `ng-rss` alias to rebuild the container (i.e., to deploy code changes).
-
-```
-$ ng-rss # rebuild the feed server container 
-```
+You should have received a copy of the GNU General Public License along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
